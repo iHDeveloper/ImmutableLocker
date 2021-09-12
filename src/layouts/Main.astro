@@ -1,16 +1,20 @@
 ---
 export interface Props {
     title?: string;
+    shortTitle?: string;
 }
-let {title = undefined} = Astro.props;
+let {title = undefined, shortTitle = undefined} = Astro.props;
 
 if (title !== undefined)
     title = " - " + title;
+
+if (shortTitle !== undefined)
+    shortTitle = " - " + shortTitle;
 ---
 
 <html>
     <head>
-        <title>Immutable Lockers</title>
+        <title>Immutable Lockers{shortTitle}</title>
     </head>
     <body>
         <center>
