@@ -80,34 +80,74 @@ import CryptoLibs from '../components/CryptoLibs.astro';
         }
     </script>
 
+    <style lang="scss">
+        input {
+            min-width: 30em;
+        }
+
+        #title, #author, #passphrase, #passphrase-hint {
+            text-align: center;
+        }
+
+        textarea {
+            min-width: 50em;
+            min-height: 20em;
+            margin-bottom: 2em;
+        }
+
+        button {
+            padding: 5px 35px;
+            font-family: sans-serial;
+        }
+
+        div.preview {
+            border: 2px solid black;
+            min-width: 5em;
+            min-height: 15em;
+            padding: 2em 2em;
+            margin: 5em 5em;
+            margin-top: 0;
+            word-wrap: anywhere;
+            text-align: left;
+        }
+
+        form {
+            margin-bottom: 3em;
+        }
+    </style>
+
     <form id="view-form">
-        <p>Locker Data</p>
-        <textarea id="locker-data" required></textarea>
+        <center>
+            <h2>Locker Data</h2>
+            <textarea id="locker-data" required></textarea>
 
-        <br> <br>
+            <br> <br>
 
-        <button type="submit">Load</button>
+            <button type="submit">Load</button>
+        </center>
     </form>
 
     <form id="passphrase-form">
-        <p>Passphrase</p>
-        <input id="passphrase" type="password" required/>
+        <center>
+            <h2>Passphrase</h2>
+            <input id="passphrase" type="password" required/>
 
-        <p>Hint: <b id="passphrase-hint"></b></p>
+            <p>Hint: <b id="passphrase-hint"></b></p>
 
-        <button type="submit">Unlock</button>
+            <button type="submit">Unlock</button>
 
-        <br />
-
-        <div id="unlock-status"></div>
+            <div id="unlock-status"></div>
+        </center>
     </form>
 
-    <h4>Raw Metadata</h4>
-    <div id="locker-raw-metadata"></div>
+    <center>
+        <h2>Raw Metadata</h2>
+        <div id="locker-raw-metadata" class="preview"></div>
 
-    <h4>Metadata</h4>
-    <div id="locker-metadata"></div>
+        <h2>Metadata</h2>
+        <div id="locker-metadata" class="preview"></div>
 
-    <h4>Content</h4>
-    <div id="locker-content"></div>
+        <h2>Content</h2>
+        <div id="locker-content" class="preview"></div>
+    </center>
 </Main>

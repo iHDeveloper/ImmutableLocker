@@ -59,51 +59,90 @@ import CryptoLibs from '../components/CryptoLibs.astro';
         };
     </script>
 
+    <style lang="scss">
+        input {
+            min-width: 30em;
+        }
+
+        #title, #author, #passphrase, #passphrase-hint {
+            text-align: center;
+        }
+
+        textarea {
+            min-width: 50em;
+            min-height: 20em;
+            margin-bottom: 2em;
+        }
+
+        button {
+            padding: 5px 35px;
+            font-family: sans-serial;
+        }
+
+        div.preview {
+            border: 2px solid black;
+            min-width: 5em;
+            min-height: 15em;
+            padding: 2em 2em;
+            margin: 5em 5em;
+            word-wrap: anywhere;
+            text-align: left;
+        }
+    </style>
+
     <form id="build-form" style="margin-bottom: 2em;">
-        <h2>Locker Metadata</h2>
+        <center>
+            <h2>Locker Metadata</h2>
 
-        <p>Title</p>
-        <input id="title" type="text" placeholder="Enter the locker title (optional)" />
+            <p>Title</p>
+            <input id="title" type="text" placeholder="Enter the locker title (optional)" />
 
-        <p>Author</p>
-        <input id="author" type="text" placeholder="Enter your author (optional)" />
+            <p>Author</p>
+            <input id="author" type="text" placeholder="Enter your author (optional)" />
 
-        <p>Description</p>
-        <br />
-        <textarea id="description"></textarea>
+            <p>Description</p>
+            <textarea id="description"></textarea>
 
-        <hr />
-
-        <h2>Locker Content</h2>
-        <textarea id="content" required></textarea>
+        </center>
 
         <hr />
 
-        <h2>Locker Security</h2>
+        <center>
+            <h2>Locker Content</h2>
+            <textarea id="content" required></textarea>
+        </center>
 
-        <p>Passpharse</p>
-        <input id="passphrase" type="password" placeholder="Enter your locker passpharse" required />
+        <hr />
 
-        <p>Passpharse Hint</p>
-        <input id="passphrase-hint" type="text" placeholder="Enter your passpharse hint (optional)" />
+        <center>
+            <h2>Locker Security</h2>
 
-        <br />
-        <br />
-        <button type="submit">Build!</button>
+            <p>Passpharse</p>
+            <input id="passphrase" type="password" placeholder="Enter your locker passpharse" required />
+
+            <p>Passpharse Hint</p>
+            <input id="passphrase-hint" type="text" placeholder="Enter your passpharse hint (optional)" />
+
+            <br />
+            <br />
+            <button type="submit">Build!</button>
+        </center>
     </form>
 
-    <h2>Locker Prototype</h2>
+    <center>
+        <h2>Locker Prototype</h2>
 
-    <h4>Encrypted Content</h4>
-    <div id="encrypted-content-preview"></div>
+        <h4>Encrypted Content</h4>
+        <div id="encrypted-content-preview" class="preview"></div>
 
-    <h4>Non-Encoded Locker</h4>
-    <div id="non-encoded-locker-preview"></div>
+        <h4>Non-Encoded Locker</h4>
+        <div id="non-encoded-locker-preview" class="preview"></div>
 
-    <h4>Encoded Locker</h4>
-    <div id="encoded-locker-preview"></div>
+        <h4>Encoded Locker</h4>
+        <div id="encoded-locker-preview" class="preview"></div>
 
-    <h4>SHA-512 Checksum</h4>
-    <div id="checksum-preview"></div>
+        <h4>SHA-512 Checksum</h4>
+        <div id="checksum-preview" class="preview"></div>
+    </center>
 
 </Main>
