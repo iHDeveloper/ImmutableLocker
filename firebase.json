@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "immutable-lockers-ihdeveloper",
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
