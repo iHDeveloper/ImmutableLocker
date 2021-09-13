@@ -11,43 +11,47 @@ import CryptoLibs from '../components/CryptoLibs.astro';
         <h2>Locker Metadata</h2>
 
         <p>Title</p>
-        <input type="text" placeholder="Enter the locker title (optional)" />
+        <input id="title" type="text" placeholder="Enter the locker title (optional)" />
 
         <p>Author</p>
-        <input type="text" placeholder="Enter your author (optional)" />
+        <input id="author" type="text" placeholder="Enter your author (optional)" />
 
         <p>Description</p>
         <br />
-        <textarea></textarea>
+        <textarea id="description"></textarea>
 
         <hr />
 
         <h2>Locker Content</h2>
-        <textarea></textarea>
+        <textarea id="content" required></textarea>
 
         <hr />
 
         <h2>Locker Security</h2>
 
         <p>Passpharse</p>
-        <input type="password" placeholder="Enter your locker passpharse" />
+        <input id="passphrase" type="password" placeholder="Enter your locker passpharse" required />
 
         <p>Passpharse Hint</p>
-        <input type="text" placeholder="Enter your passpharse hint (optional)" />
+        <input id="passphrase-hint" type="text" placeholder="Enter your passpharse hint (optional)" />
+
+        <br />
+        <br />
+        <button type="submit">Build!</button>
     </form>
 
     <h2>Locker Prototype</h2>
 
-    <p>Encrypted Content</p>
-    <div id="encrypted-content-preivew"></div>
+    <h4>Encrypted Content</h4>
+    <div id="encrypted-content-preview"></div>
 
-    <p>Non-Encoded Locker</p>
+    <h4>Non-Encoded Locker</h4>
     <div id="non-encoded-locker-preview"></div>
 
-    <p>Encoded Locker</p>
+    <h4>Encoded Locker</h4>
     <div id="encoded-locker-preview"></div>
 
-    <p>SHA-512 Checksum</p>
+    <h4>SHA-512 Checksum</h4>
     <div id="checksum-preview"></div>
 
 </Main>
