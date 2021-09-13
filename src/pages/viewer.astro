@@ -1,0 +1,113 @@
+---
+import Main from '../layouts/Main.astro';
+
+import CryptoLibs from '../components/CryptoLibs.astro';
+---
+<Main shortTitle="Viewer" title="View your locker!">
+    <CryptoLibs />
+
+    <script type="module">
+        import { base64decode, base64ToBytes } from '/js/lib/base64.js';
+        import { hashPassphrase, generateKey, decrypt } from '/js/build.js';
+
+        var salt = undefined;
+        var hint = undefined;
+        var content = undefined;
+        var encryptedVerification = undefined;
+
+        async function onLoad(data) {
+            // Decode
+            const raw = base64decode(data);
+
+            // Store salt, hint, metadata, and content
+            const locker = JSON.parse(raw);
+            salt = locker.security.salt;
+            hint = locker.security.hint;
+            encryptedVerification = locker.security.verify;
+            content = locker.content
+
+            document.getElementById("locker-raw-metadata").innerText = JSON.stringify(locker.metadata);
+            document.getElementById("locker-metadata").innerText = `Title: ${locker.metadata.title}\nAuthor: ${locker.metadata.author}\nDescription: ${locker.metadata.description}\nCreation Date: ${locker.metadata.date}`;
+        }
+
+        async function onUnlock(passphrase) {
+            const status = document.getElementById("unlock-status");
+
+            if (salt === undefined) {
+                status.innerText = "Salt is not available in the locker security! Creating encryption key is not possible... :(";
+                return;
+            }
+
+            if (content === undefined) {
+                status.innerText = "Content is not available to be decrypted!";
+            }
+
+            // Generate encryption key
+            const hash = await hashPassphrase(passphrase);
+            const lockerKey = await generateKey(hash, base64ToBytes(salt));
+
+            if (encryptedVerification !== undefined) {
+                const rawVerify = base64ToBytes(encryptedVerification);
+                const decryptedVerify = decrypt(lockerKey, rawVerify);
+
+                if (decryptedVerify !== "verified") {
+                    status.innerText = "Incorrect passphrase! Try again...";
+                    return;
+                }
+
+                status.innerText = "Passphrase is correct! Unlocking...";
+            } else {
+                status.innerText = "No verification method available! The content might not make any sense.";
+            }
+
+            const rawContent = base64ToBytes(content);
+            const decryptedContent = decrypt(lockerKey, rawContent);
+            document.getElementById("locker-content").innerText = decryptedContent;
+        }
+
+        document.getElementById("view-form").onsubmit = (e) => {
+            e.preventDefault();
+
+            const data = document.getElementById("locker-data").value.trim();
+            onLoad(data);
+        }
+
+        document.getElementById("passphrase-form").onsubmit = (e) => {
+            e.preventDefault();
+
+            const passphrase = document.getElementById("passphrase").value;
+            onUnlock(passphrase);
+        }
+    </script>
+
+    <form id="view-form">
+        <p>Locker Data</p>
+        <textarea id="locker-data" required></textarea>
+
+        <br> <br>
+
+        <button type="submit">Load</button>
+    </form>
+
+    <form id="passphrase-form">
+        <p>Passphrase</p>
+        <input id="passphrase" type="password" required/>
+
+        <p>Hint: <b id="passphrase-hint"></b></p>
+
+        <button type="submit">Unlock</button>
+
+        <br />
+
+        <div id="unlock-status"></div>
+    </form>
+
+    <h4>Raw Metadata</h4>
+    <div id="locker-raw-metadata"></div>
+
+    <h4>Metadata</h4>
+    <div id="locker-metadata"></div>
+
+    <h4>Content</h4>
+    <div id="locker-content"></div>
+</Main>
