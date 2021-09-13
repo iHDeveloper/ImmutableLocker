@@ -78,6 +78,16 @@ import CryptoLibs from '../components/CryptoLibs.astro';
             const passphrase = document.getElementById("passphrase").value;
             onUnlock(passphrase);
         }
+
+        const showHintButton = document.getElementById("show-hint-button");
+        showHintButton.onclick = () => {
+            if (hint === undefined) {
+                return;
+            }
+
+            document.getElementById("passphrase-hint").innerText = base64decode(hint);
+            showHintButton.style.display = 'none';
+        }
     </script>
 
     <style lang="scss">
@@ -132,11 +142,14 @@ import CryptoLibs from '../components/CryptoLibs.astro';
             <h2>Passphrase</h2>
             <input id="passphrase" type="password" required/>
 
-            <p>Hint: <b id="passphrase-hint"></b></p>
-
+            <p>
+                Hint: <b id="passphrase-hint"></b>
+                <button id="show-hint-button" type="button">Show Hint</button>
+            </p>
+            
             <button type="submit">Unlock</button>
 
-            <div id="unlock-status"></div>
+            <div id="unlock-status" style="margin-top:1em"></div>
         </center>
     </form>
 
