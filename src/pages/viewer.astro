@@ -89,6 +89,15 @@ import CryptoLibs from '../components/CryptoLibs.astro';
             showHintButton.style.display = 'none';
         }
     </script>
+    <script type="text/javascript">
+        function readDataFromFile(input) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById("locker-data").value = e.target.result;
+            };
+            reader.readAsText(input.files[0]);
+        }
+    </script>
 
     <style lang="scss">
         input {
@@ -131,7 +140,11 @@ import CryptoLibs from '../components/CryptoLibs.astro';
             <h2>Locker Data</h2>
             <textarea id="locker-data" required></textarea>
 
-            <br> <br>
+            <br />
+
+            <label>Or, load from file <input id="locker-load-from-file" type="file" onchange="readDataFromFile(this)" /> </label>
+
+            <br /> <br />
 
             <button type="submit">Load</button>
         </center>
