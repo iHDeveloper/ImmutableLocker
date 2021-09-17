@@ -1,0 +1,113 @@
+---
+import Main from '../layouts/Main.astro';
+
+import CryptoLibs from '../components/CryptoLibs.astro';
+---
+<Main shortTitle="Viewer" title="View your locker!">
+    <CryptoLibs />
+
+    <script type="module">
+        import { hexToBuffer, bufferToHex } from '/js/utils.js';
+        import { checksum } from '/js/build.js';
+
+        async function onLoad(data, targetChecksumHex) {
+            const currentChecksum = await checksum(data);
+            const status = document.getElementById("verify-status");
+
+            document.getElementById("checksum-preview").innerText = bufferToHex(currentChecksum);
+
+            if (targetChecksumHex === "") {
+                status.innerText = "Checksum is generated from the given data. There's no target to compare.";
+                return;
+            }
+
+            const targetChecksum = hexToBuffer(targetChecksumHex);
+
+            let equal = false;
+            for (let index = 0; index < 64; index++) {
+                if (targetChecksum[index] !== currentChecksum[index]) {
+                    equal = false;
+                    break;
+                }
+
+                equal = true;
+            }
+
+            document.getElementById("target-checksum-preview").innerText = targetChecksumHex;
+
+            if (equal) {
+                status.innerText = "The locker is verified by the given checksum";
+            } else {
+                status.innerText = "The locker is not verified by the given checksum";
+            }
+        }
+
+        document.getElementById("verify-form").onsubmit = (e) => {
+            e.preventDefault();
+
+            const data = document.getElementById("locker-data").value.trim();
+            const targetChecksum = document.getElementById("target-checksum").value.trim();
+            onLoad(data, targetChecksum);
+        }
+    </script>
+
+    <style lang="scss">
+        input {
+            min-width: 30em;
+        }
+
+        #title, #author, #passphrase, #passphrase-hint {
+            text-align: center;
+        }
+
+        textarea {
+            min-width: 50em;
+            min-height: 20em;
+            margin-bottom: 2em;
+        }
+
+        button {
+            padding: 5px 35px;
+            font-family: sans-serial;
+        }
+
+        div.preview {
+            border: 2px solid black;
+            min-width: 5em;
+            min-height: 15em;
+            padding: 2em 2em;
+            margin: 5em 5em;
+            margin-top: 0;
+            word-wrap: anywhere;
+            text-align: left;
+        }
+
+        form {
+            margin-bottom: 3em;
+        }
+    </style>
+
+    <form id="verify-form">
+        <center>
+            <h2>Locker Data</h2>
+            <textarea id="locker-data" required></textarea>
+
+            <h2>Target Checksum</h2>
+            <input id="target-checksum" type="text" placeholder="Enter the target checksum (optional)" />
+
+            <br> <br>
+
+            <button type="submit">Verify</button>
+
+            <div id="verify-status" style="margin-top:1em"></div>
+        </center>
+    </form>
+
+    <center>
+        <h2>Checksum</h2>
+        <div id="checksum-preview" class="preview"></div>
+
+        <h2>Target Checksum</h2>
+        <div id="target-checksum-preview" class="preview"></div>
+    </center>
+</Main>
